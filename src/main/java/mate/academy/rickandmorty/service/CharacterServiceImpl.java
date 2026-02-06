@@ -38,6 +38,11 @@ public class CharacterServiceImpl implements CharacterService {
                 .map(characterMapper::toDto);
     }
 
+    @Override
+    public long count() {
+        return characterRepository.count();
+    }
+
     public CharacterDto getRandomWikiCharacter() {
         Long randomId = new Random().nextLong(1, characterRepository.count());
         return findById(randomId);
