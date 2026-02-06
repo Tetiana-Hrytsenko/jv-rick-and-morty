@@ -3,7 +3,7 @@ package mate.academy.rickandmorty.service;
 import java.util.List;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
-import mate.academy.rickandmorty.dto.external.CharacterApiDto;
+import mate.academy.rickandmorty.dto.external.CharacterBasicDto;
 import mate.academy.rickandmorty.dto.internal.CharacterDto;
 import mate.academy.rickandmorty.exception.EntityNotFoundException;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
@@ -20,8 +20,8 @@ public class CharacterServiceImpl implements CharacterService {
     private final CharacterMapper characterMapper;
 
     @Override
-    public List<CharacterDto> saveAll(List<CharacterApiDto> characterApiDtos) {
-        List<Character> characters = characterMapper.toListModel(characterApiDtos);
+    public List<CharacterDto> saveAll(List<CharacterBasicDto> characterBasicDtos) {
+        List<Character> characters = characterMapper.toListModel(characterBasicDtos);
         return characterMapper.toListDto(characterRepository.saveAll(characters));
     }
 
@@ -39,7 +39,7 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     public CharacterDto getRandomWikiCharacter() {
-        Long randomId = new Random().nextLong(characterRepository.findAll().size());
+        Long randomId = new Random().nextLong(characterRepository.count());
         return findById(randomId);
     }
 }
