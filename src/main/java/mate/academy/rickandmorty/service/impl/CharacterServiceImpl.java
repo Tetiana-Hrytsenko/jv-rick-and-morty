@@ -1,4 +1,4 @@
-package mate.academy.rickandmorty.service;
+package mate.academy.rickandmorty.service.impl;
 
 import java.util.List;
 import java.util.Random;
@@ -9,6 +9,7 @@ import mate.academy.rickandmorty.exception.EntityNotFoundException;
 import mate.academy.rickandmorty.mapper.CharacterMapper;
 import mate.academy.rickandmorty.model.Character;
 import mate.academy.rickandmorty.repository.CharacterRepository;
+import mate.academy.rickandmorty.service.CharacterService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -36,11 +37,6 @@ public class CharacterServiceImpl implements CharacterService {
     public Page<CharacterDto> getCharactersByNameContains(String name, Pageable pageable) {
         return characterRepository.findCharactersByNameContains(name, pageable)
                 .map(characterMapper::toDto);
-    }
-
-    @Override
-    public long count() {
-        return characterRepository.count();
     }
 
     public CharacterDto getRandomWikiCharacter() {

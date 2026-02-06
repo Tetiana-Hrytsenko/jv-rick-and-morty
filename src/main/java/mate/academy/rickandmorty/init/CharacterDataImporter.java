@@ -1,6 +1,9 @@
 package mate.academy.rickandmorty.init;
 
+import java.util.ArrayList;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
+import mate.academy.rickandmorty.dto.external.CharacterBasicDto;
 import mate.academy.rickandmorty.dto.external.CharacterResponseDto;
 import mate.academy.rickandmorty.exception.DataLoadException;
 import mate.academy.rickandmorty.service.CharacterService;
@@ -18,15 +21,17 @@ public class CharacterDataImporter implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
+        List<CharacterBasicDto> charactersBasicDtoList = new ArrayList<>();
         CharacterResponseDto response = null;
         String nextUrl = BASE_URL;
-        while (nextUrl != null && characterService.count() <= CHARACTERS_FETCH_LIMIT) {
+        while (nextUrl != null && charactersBasicDtoList.size() <= CHARACTERS_FETCH_LIMIT) {
             response = client.fetchCharactersFromApi(nextUrl);
             if (response.getResults().isEmpty()) {
                 throw new DataLoadException("Failed to fetch characters from public API.");
             }
-            characterService.saveAll(response.getResults());
+            charactersBasicDtoList.addAll(response.getResults());
             nextUrl = response.getInfo().getNext();
         }
+        characterService.saveAll(charactersBasicDtoList);
     }
 }

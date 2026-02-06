@@ -14,6 +14,4 @@ public interface CharacterService {
     CharacterDto getRandomWikiCharacter();
 
     Page<CharacterDto> getCharactersByNameContains(String name, Pageable pageable);
-
-    long count();
 }
