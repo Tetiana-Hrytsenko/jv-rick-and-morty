@@ -18,18 +18,19 @@ public class CharacterDataImporter implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        CharacterResponseDto response = client.fetchCharactersFromApi(BASE_URL);
-        if (response.getResults().isEmpty()) {
-            throw new DataLoadException("Failed to fetch characters from public API.");
-        }
+        CharacterResponseDto response = null;
         String nextUrl = BASE_URL;
         while (nextUrl != null) {
             try {
                 response = client.fetchCharactersFromApi(nextUrl);
+                if (response.getResults().isEmpty()) {
+                    throw new DataLoadException("Failed to fetch characters from public API.");
+                }
                 characterService.saveAll(response.getResults());
                 nextUrl = response.getInfo().getNext();
             } catch (Exception e) {
                 CharacterResponseDto debugResponse = response;
+                throw new RuntimeException("Can't fetch characters data.", e);
             }
         }
     }

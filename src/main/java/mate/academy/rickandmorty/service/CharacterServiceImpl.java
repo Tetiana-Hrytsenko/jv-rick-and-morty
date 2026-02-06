@@ -39,7 +39,7 @@ public class CharacterServiceImpl implements CharacterService {
     }
 
     public CharacterDto getRandomWikiCharacter() {
-        Long randomId = new Random().nextLong(characterRepository.count());
+        Long randomId = new Random().nextLong(1, characterRepository.count());
         return findById(randomId);
     }
 }
